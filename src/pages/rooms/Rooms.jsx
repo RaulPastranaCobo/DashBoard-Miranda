@@ -12,7 +12,6 @@ const Rooms = () => {
   const dispatch = useDispatch();
   const rooms = useSelector((state) => state.rooms.rooms);
 
-  // Estado para el formulario de crear/editar habitación
   const [isEditing, setIsEditing] = useState(false);
   const [roomData, setRoomData] = useState({
     id: null,
@@ -27,25 +26,20 @@ const Rooms = () => {
     dispatch(fetchRooms());
   }, [dispatch]);
 
-  // Manejo de la eliminación
   const handleDelete = async (id) => {
     const numericId = Number(id);
     await dispatch(deleteRoom(numericId));
   };
 
-  // Manejo del formulario de añadir o editar habitación
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (isEditing) {
-      // Actualizar habitación
       dispatch(updateRoom(roomData));
     } else {
-      // Crear nueva habitación
       dispatch(createRoom(roomData));
     }
 
-    // Limpiar el formulario después de la acción
     setIsEditing(false);
     setRoomData({
       id: null,
@@ -57,7 +51,6 @@ const Rooms = () => {
     });
   };
 
-  // Manejo de los cambios en el formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRoomData((prevData) => ({
@@ -66,7 +59,6 @@ const Rooms = () => {
     }));
   };
 
-  // Rellenar el formulario con los datos de la habitación cuando se edita
   const handleEdit = (room) => {
     setRoomData({
       id: room.id,
@@ -159,10 +151,10 @@ const Rooms = () => {
             </tr>
           ) : (
             rooms.map((room) => (
-              <tr key={room.id}>
-                <td>{room.name || "N/A"}</td>
-                <td>${room.price}</td>
-                <td>${room.discount || "-"}</td>
+              <tr key={room.room_id}>
+                <td>{room.room_type || "N/A"}</td>
+                <td>{room.price}</td>
+                <td>{room.discount || "-"}</td>
                 <td>{room.cancellation_policy}</td>
                 <td>
                   <button onClick={() => handleEdit(room)}>Editar</button>
