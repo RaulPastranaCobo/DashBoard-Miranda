@@ -9,7 +9,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Bookings from "./pages/Bookings";
 import Contact from "./pages/Contact";
 import Users from "./pages/users";
-import Rooms from "./pages/Rooms";
+import Rooms from "./pages/rooms/Rooms";
 import Navbar from "./components/NavBar/Navbar";
 import LoginPage from "./pages/LoginPage";
 import { useAuth } from "./context/AuthContext";

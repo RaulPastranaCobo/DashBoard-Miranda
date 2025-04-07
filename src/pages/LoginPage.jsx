@@ -1,24 +1,24 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      alert("Completa todos los campos.");
-      return;
+    // Validación de las credenciales
+    if (user === "admin" && password === "admin") {
+      const userData = { user, name: "Administrador", password };
+
+      // Guardar en localStorage y despachar la acción de login
+      localStorage.setItem("user", JSON.stringify(userData));
+      login(userData);
+    } else {
+      alert("Credenciales incorrectas. Inténtalo de nuevo.");
     }
-
-    const userData = { email, password };
-
-    localStorage.setItem("user", JSON.stringify(userData));
-
-    login(userData);
   };
 
   return (
@@ -28,9 +28,9 @@ const LoginPage = () => {
         <div>
           <label>Email:</label>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
             required
           />
         </div>
