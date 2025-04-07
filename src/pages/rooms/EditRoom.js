@@ -13,7 +13,7 @@ const EditRoomForm = () => {
   const [roomDescription, setRoomDescription] = useState("");
 
   useEffect(() => {
-    dispatch(fetchRoom(id));  // Fetch the room data when the component mounts
+    dispatch(fetchRoom(id));
   }, [id, dispatch]);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const EditRoomForm = () => {
 
     const updatedRoom = { id, name: roomName, description: roomDescription };
     dispatch(updateRoom(updatedRoom));
-    history.push("/rooms");  // Redirect to the rooms list
+    history.push("/rooms");
   };
 
   if (!room) return <div>Loading...</div>;
