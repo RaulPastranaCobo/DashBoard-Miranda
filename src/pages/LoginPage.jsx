@@ -9,11 +9,9 @@ const LoginPage = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Validación de las credenciales
     if (user === "admin" && password === "admin") {
       const userData = { user, name: "Administrador", password };
 
-      // Guardar en localStorage y despachar la acción de login
       localStorage.setItem("user", JSON.stringify(userData));
       login(userData);
     } else {

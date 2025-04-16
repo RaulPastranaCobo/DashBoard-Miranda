@@ -1,28 +1,29 @@
-import { createContext, useReducer, useContext } from 'react';
+import { createContext, useReducer, useContext } from "react";
+
+const savedUser = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
-  isAuthenticated: false,
-  user: null,
+  isAuthenticated: !!savedUser,
+  user: savedUser || null,
 };
-
 
 const authReducer = (state, action) => {
   switch (action.type) {
-    case 'LOGIN':
+    case "LOGIN":
       return {
         ...state,
         isAuthenticated: true,
         user: action.payload,
       };
 
-    case 'LOGOUT':
+    case "LOGOUT":
       return {
         ...state,
         isAuthenticated: false,
         user: null,
       };
 
-    case 'UPDATE_USER':
+    case "UPDATE_USER":
       return {
         ...state,
         user: { ...state.user, ...action.payload },
@@ -39,15 +40,15 @@ export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const login = (userData) => {
-    dispatch({ type: 'LOGIN', payload: userData });
+    dispatch({ type: "LOGIN", payload: userData });
   };
 
   const logout = () => {
-    dispatch({ type: 'LOGOUT' });
+    dispatch({ type: "LOGOUT" });
   };
 
   const updateUser = (updatedUserData) => {
-    dispatch({ type: 'UPDATE_USER', payload: updatedUserData });
+    dispatch({ type: "UPDATE_USER", payload: updatedUserData });
   };
 
   return (
