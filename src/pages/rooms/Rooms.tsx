@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import {
   fetchRooms,
   deleteRoom,
   createRoom,
   updateRoom,
+  Room,
 } from "../../slices/roomsSlice";
 import RoomCard from "../../components/RoomCard/RoomCard";
+import { RootState } from "../../store";
 
-const Rooms = () => {
-  const dispatch = useDispatch();
-  const rooms = useSelector((state) => state.rooms.rooms);
+const Rooms: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const rooms = useAppSelector((state: RootState) => state.rooms.rooms);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [roomData, setRoomData] = useState({
-    id: null,
+  const [roomData, setRoomData] = useState<Partial<Room>>({
+    id:1,
     name: "",
-    price: "",
-    discount: "",
+    price: 0,
+    discount: 0,
     cancellation_policy: "",
     amenities: "",
   });
@@ -26,40 +28,40 @@ const Rooms = () => {
     dispatch(fetchRooms());
   }, [dispatch]);
 
-  const handleDelete = async (id) => {
-    const numericId = Number(id);
-    await dispatch(deleteRoom(numericId));
+  const handleDelete = async (id: number) => {
+    await dispatch(deleteRoom(id));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isEditing) {
-      dispatch(updateRoom(roomData));
+    if (isEditing && roomData.id !== null && roomData.id !== undefined) {
+      dispatch(updateRoom(roomData as Room));
     } else {
-      dispatch(createRoom(roomData));
+      const { id, ...newRoom } = roomData;
+      dispatch(createRoom(newRoom as Omit<Room, "id">));
     }
 
     setIsEditing(false);
     setRoomData({
-      id: null,
+      id:1,
       name: "",
-      price: "",
-      discount: "",
+      price: 0,
+      discount: 0,
       cancellation_policy: "",
       amenities: "",
     });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setRoomData((prevData) => ({
-      ...prevData,
-      [name]: value,
+    setRoomData((prev) => ({
+      ...prev,
+      [name]: name === "price" || name === "discount" ? Number(value) : value,
     }));
   };
 
-  const handleEdit = (room) => {
+  const handleEdit = (room: Room) => {
     setRoomData({
       id: room.id,
       name: room.name,
@@ -83,7 +85,7 @@ const Rooms = () => {
             <input
               type="text"
               name="name"
-              value={roomData.name}
+              value={roomData.name || ""}
               onChange={handleChange}
               required
             />
@@ -94,7 +96,7 @@ const Rooms = () => {
             <input
               type="number"
               name="price"
-              value={roomData.price}
+              value={roomData.price || 0}
               onChange={handleChange}
               required
             />
@@ -105,7 +107,7 @@ const Rooms = () => {
             <input
               type="number"
               name="discount"
-              value={roomData.discount}
+              value={roomData.discount || 0}
               onChange={handleChange}
             />
           </div>
@@ -115,7 +117,7 @@ const Rooms = () => {
             <input
               type="text"
               name="cancellation_policy"
-              value={roomData.cancellation_policy}
+              value={roomData.cancellation_policy || ""}
               onChange={handleChange}
             />
           </div>
@@ -125,7 +127,7 @@ const Rooms = () => {
             <input
               type="text"
               name="amenities"
-              value={roomData.amenities}
+              value={roomData.amenities || ""}
               onChange={handleChange}
             />
           </div>
@@ -147,20 +149,18 @@ const Rooms = () => {
         <tbody>
           {rooms.length === 0 ? (
             <tr>
-              <td colSpan="5">No hay habitaciones disponibles.</td>
+              <td colSpan={5}>No hay habitaciones disponibles.</td>
             </tr>
           ) : (
-            rooms.map((room) => (
-              <tr key={room.room_id}>
-                <td>{room.room_type || "N/A"}</td>
+            rooms.map((room:Room) => (
+              <tr key={room.id}>
+                <td>{room.name || "N/A"}</td>
                 <td>{room.price}</td>
                 <td>{room.discount || "-"}</td>
                 <td>{room.cancellation_policy}</td>
                 <td>
                   <button onClick={() => handleEdit(room)}>Editar</button>
-                  <button onClick={() => handleDelete(room.id)}>
-                    Eliminar
-                  </button>
+                  <button onClick={() => handleDelete(room.id)}>Eliminar</button>
                 </td>
               </tr>
             ))
@@ -169,12 +169,12 @@ const Rooms = () => {
       </table>
 
       <div className="room-cards">
-        {rooms.slice(0, 10).map((room) => (
+        {rooms.slice(0, 10).map((room:Room) => (
           <RoomCard
             key={room.id}
             room_id={room.id}
             room_type={room.name}
-            description={room.description}
+            description={room.description || ""}
             price={room.price}
             discount={room.discount}
             cancellation_policy={room.cancellation_policy}

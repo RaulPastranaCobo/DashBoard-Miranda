@@ -7,22 +7,19 @@ import {
   Icon,
 } from "./NavBarStyle";
 
-//import hamburguesaIcon from "../../assets/hamburguesaIcon";
-//import correoIcon from "../assets/correo.png";
-//import campanaIcon from "../assets/campana.png";
-//import cerrarSesionIcon from "../assets/cerrar-sesion.png";
+import React from "react";
 
-const Navbar = () => {
+// Tipado explícito para la relación ruta → título
+const pageTitles: Record<string, string> = {
+  "/": "Dashboard",
+  "/rooms": "Rooms",
+  "/bookings": "Bookings",
+  "/users": "Users",
+  "/contact": "Contact",
+};
+
+const Navbar: React.FC = () => {
   const location = useLocation();
-
-  const pageTitles = {
-    "/": "Dashboard",
-    "/rooms": "Rooms",
-    "/bookings": "Bookings",
-    "/users": "Users",
-    "/contact": "Contact",
-  };
-
   const currentTitle = pageTitles[location.pathname] || "Dashboard Miranda";
 
   return (

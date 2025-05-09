@@ -7,12 +7,12 @@ import {
 
 import Sidebar from "./components/Sidebar/Sidebar";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import Bookings from "./pages/Bookings";
-import Contact from "./pages/Contact";
-import Users from "./pages/users";
+import Bookings from "./pages/bookings/Bookings";
+import Contact from "./pages/contacts/Contacts";
+import Users from "./pages/users/Users";
 import Rooms from "./pages/rooms/Rooms";
 import Navbar from "./components/NavBar/Navbar";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/login/LoginPage";
 
 import { useAuth } from "./context/AuthContext";
 
@@ -24,13 +24,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Ruta de Login, redirige a / si ya está autenticado */}
         <Route
           path="/login"
           element={isAuthenticated ? <Navigate to="/" /> : <LoginPage />}
         />
 
-        {/* Rutas protegidas: redirige a /login si no está autenticado */}
         <Route
           path="/*"
           element={
@@ -52,7 +50,6 @@ function App() {
                 </MainLayout>
               </AppContainer>
             ) : (
-              // Si no está autenticado, redirige a /login
               <Navigate to="/login" />
             )
           }
