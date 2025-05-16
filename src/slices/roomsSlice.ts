@@ -1,24 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import RoomsData from "../data/RoomsData.json";
+import { Room, RoomsState } from "../interfaces/roomInterface";
 
-export interface Room {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  discount?: number;
-  cancellation_policy?: string;
-  amenities?: string;
-  room_type?: string;
-}
-
-interface RoomsState {
-  rooms: Room[];
-  room: Room | null;
-  loading: boolean;
-  error: string | null;
-}
 
 
 const initialState: RoomsState = {

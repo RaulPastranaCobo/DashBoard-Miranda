@@ -1,20 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import contactsData from "../data/ContactData.json"; 
+import { Contact, ContactsState } from "../interfaces/contactInterface";
 
-export interface Contact {
-  id: number;
-  date: string;
-  name: string;
-  email: string;
-  phone: string;
-  comment: string;
-}
 
-interface ContactsState {
-  contacts: Contact[];
-  loading: boolean;
-  error: string | null;
-}
 
 const initialState: ContactsState = {
   contacts: [],

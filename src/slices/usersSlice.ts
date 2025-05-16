@@ -1,22 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import UsersData from "../data/UserData.json";
+import { User, UsersState } from "../interfaces/userInterface";
 
-// Tipos
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  date: string;
-  description: string;
-  contact: string;
-  status: string;
-}
 
-interface UsersState {
-  users: User[];
-  loading: boolean;
-  error: string | null;
-}
 
 
 const initialState: UsersState = {
